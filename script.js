@@ -1,54 +1,82 @@
 function computerPlay() {
-    return Math.floor(Math.random() * 3);
+    let num = Math.floor(Math.random() * 3);
+    if (num === 0) {
+        return "rock";
+    } else if (num === 1) {
+        return "paper";
+    } else {
+        return "scissors";
+    }
 }
 function playRound(playerSelection, computerSelection) {
     console.log(playerSelection);
     console.log(computerSelection);
-    let player;
-    if (playerSelection.toLowerCase() == "rock") {
-        player = 0;
-    } else if (playerSelection.toLowerCase() == "paper") {
-        player = 1;
-    } else if (playerSelection.toLowerCase() == "scissors") {
-        player = 2;
-    }
 
-    if (player === computerSelection) {
+    if (playerSelection === computerSelection) {
         return "tie";
-    } else if (player === 0 && computerSelection === 1) {
+    } else if (playerSelection === "rock" && computerSelection === "paper") {
         return "computer";
-    } else if (player === 0 && computerSelection === 2) {
+    } else if (playerSelection === "rock" && computerSelection === "scissors") {
         return "player";
-    } else if (player === 1 && computerSelection === 0) {
+    } else if (playerSelection === "paper" && computerSelection === "rock") {
         return "player";
-    } else if (player === 1 && computerSelection === 2) {
+    } else if (
+        playerSelection === "paper" &&
+        computerSelection === "scissors"
+    ) {
         return "computer";
-    } else if (player == 2 && computerSelection === 0) {
+    } else if (playerSelection == "scissors" && computerSelection === "rock") {
         return "computer";
-    } else if (player == 2 && computerSelection == 1) {
+    } else if (playerSelection == "scissors" && computerSelection == "paper") {
         return "player";
     }
 }
-function game() {
-    let playerScore = 0;
-    let cpuScore = 0;
-    while (playerScore < 5 && cpuScore < 5) {
-        let playerChoice = prompt("Enter Rock, Paper, or Scissors:");
-        let result = playRound(playerChoice, computerPlay());
+function game(playerSelection) {
+    if (playerScore < 5 && cpuScore < 5) {
+        // let playerChoice = prompt("Enter Rock, Paper, or Scissors:");
+        let computerSelection = computerPlay();
+
+        // Display Choices
+        playerChoice.textContent = `Your Choice: ${playerSelection}`;
+        cpuChoice.textContent = `CPU Choice: ${computerSelection}`;
+
+        let result = playRound(playerSelection, computerSelection);
 
         if (result === "player") {
-            console.log("You win!");
+            results.textContent = "You win!";
             playerScore++;
         } else if (result === "computer") {
-            console.log("You suck!");
+            results.textContent = "You suck!";
             cpuScore++;
         } else if (result === "tie") {
-            console.log("Tie!");
+            results.textContent = "Tie!";
         } else {
-            console.log("Invalid choice");
+            results.textContent = "Invalid choice";
         }
-        console.log(`You: ${playerScore} CPU: ${cpuScore}`);
+        score.textContent = `You: ${playerScore} CPU: ${cpuScore}`;
+    } else if (playerScore === 5) {
+        gameOver.textContent = "You win the whole thing";
+    } else if (cpuScore === 5) {
+        gameOver.textContent = "You lost the whole thing";
     }
 }
+let playerScore = 0;
+let cpuScore = 0;
+const rock = document.querySelector(".rock");
+const paper = document.querySelector(".paper");
+const scissors = document.querySelector(".scissors");
+const playerChoice = document.querySelector(".player-choice");
+const cpuChoice = document.querySelector(".cpu-choice");
+const results = document.querySelector(".results");
+const score = document.querySelector(".score");
+const gameOver = document.querySelector(".game-over");
 
-game();
+rock.addEventListener("click", function () {
+    game("rock");
+});
+paper.addEventListener("click", function () {
+    game("paper");
+});
+scissors.addEventListener("click", function () {
+    game("scissors");
+});
